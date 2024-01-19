@@ -1,0 +1,16 @@
+table{
+    table-layout: fixed;
+}
+th,td{
+    width: 25%;
+}
+h3{
+    text-align: center;
+    margin: auto;
+    padding: 15px;
+    color: #a30505;
+    font-size: xx-large;
+}
+td{
+    font-size: medium;
+}
