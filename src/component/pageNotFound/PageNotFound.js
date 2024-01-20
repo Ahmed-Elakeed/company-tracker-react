@@ -1,11 +1,11 @@
 import "./PageNotFound.css";
-import {useNavigate} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 const PageNotFound = () => {
-    const navigate = useNavigate();
+    const history = useHistory();
     const backPage = (event) => {
         event.preventDefault();
-        navigate(-1);
+        history.goBack();
     }
 
     return (

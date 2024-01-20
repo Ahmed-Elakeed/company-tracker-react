@@ -1,6 +1,8 @@
 import "./Navbar.css";
+import {useHistory} from "react-router-dom";
 
 const Navbar = () => {
+    const history = useHistory();
     const titleStyle = {
         fontSize: "x-large",
         fontWeight: "bold",
@@ -10,6 +12,12 @@ const Navbar = () => {
         color: "#a10606",
         fontWeight: "bold",
         fontSize: 'large'
+    }
+    const logout = (event) => {
+        event.preventDefault()
+        sessionStorage.clear();
+        localStorage.clear();
+        history.push("/login")
     }
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -28,7 +36,8 @@ const Navbar = () => {
                 </div>
             </div>
             <a href="/true" className="btn btn-primary mb-lg-auto update-button">Update my data</a>
-            <a href="/true" className="btn btn-danger mb-lg-auto logout-button">Logout</a>
+            <a href="/true" className="btn btn-danger mb-lg-auto logout-button"
+               onClick={logout}>Logout</a>
         </nav>
     )
         ;

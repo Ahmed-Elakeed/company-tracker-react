@@ -44,3 +44,12 @@ export const deleteDepartmentById = async (departmentId) => {
         throw error;
     }
 }
+export const saveDepartment = async (department) => {
+    try {
+        const response = await DepartmentService.post(`${DEPARTMENT_BASE_URL}`,department);
+        return response.data;
+    } catch (error) {
+        console.error('Error saving department:', error);
+        throw error;
+    }
+}

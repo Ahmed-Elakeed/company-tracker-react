@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import * as DepartmentService from "../../service/DepartmentService";
 import type {ApiGenericResponse} from "../../dto/ApiGenericResponse";
 import CustomPopupView from "../customPopupView/CustomPopupView";
+import DepartmentForm from "./departmentForm/DepartmentForm";
 
 const Department = () => {
     const [departments, setDepartments] = useState([])
@@ -13,7 +14,14 @@ const Department = () => {
         width: 0,
         height: 0,
     });
+    const [departmentFormProps, setDepartmentFormProps] = useState({
+        flag: false
+    })
     useEffect(() => {
+        initData()
+    }, []);
+
+    const initData = () => {
         const fetchDataFromApi = async () => {
             try {
                 const data = await DepartmentService.fetchAllDepartments();
@@ -26,7 +34,7 @@ const Department = () => {
         fetchDataFromApi().then((response: ApiGenericResponse) => {
             setDepartments(response?.data)
         });
-    }, []);
+    }
 
     const showDepartmentEmployees = (departmentId) => {
         const fetchDataFromApi = async () => {
@@ -81,10 +89,19 @@ const Department = () => {
         });
     }
 
-    const closePopup = () => {
-        setCustomViewProps({
-            flag: false
-        })
+    const closePopup = (type, result) => {
+        if (type === "FORM") {
+            if (result) {
+                initData()
+            }
+            setDepartmentFormProps({
+                flag: false
+            })
+        } else {
+            setCustomViewProps({
+                flag: false
+            })
+        }
     }
 
     const deleteDepartment = (departmentId) => {
@@ -107,12 +124,19 @@ const Department = () => {
             })
         }
     }
+
+    const openDepartmentForm = (event) => {
+        event.preventDefault()
+        setDepartmentFormProps({
+            flag: true
+        })
+    }
     return (
         <div>
             <h3 style={{color: '#a30505'}}>Departments</h3>
             <a href="/true" className="btn btn-success"
-               style={{float: "right", marginRight: "5px", marginBottom: "5px"}}>Add Department</a>
-            {customViewProps.flag && <CustomPopupView viewProps={customViewProps} closePopup={closePopup}/>}
+               style={{float: "right", marginRight: "5px", marginBottom: "5px"}}
+               onClick={openDepartmentForm}>Add Department</a>
             <table className="table">
                 <thead className="thead-dark">
                 <tr>
@@ -143,6 +167,10 @@ const Department = () => {
                 ))}
                 </tbody>
             </table>
+            {customViewProps.flag &&
+                <CustomPopupView viewProps={customViewProps} closePopup={closePopup}/>}
+            {departmentFormProps.flag &&
+                <DepartmentForm closePopup={closePopup}/>}
         </div>
     );
 }

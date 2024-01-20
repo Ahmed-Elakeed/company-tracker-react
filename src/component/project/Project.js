@@ -39,7 +39,7 @@ const Project = () => {
                 </thead>
                 <tbody>
                 {projects?.map((project) => (
-                    <tr>
+                    <tr key={project.id}>
                         <td>{project.id}</td>
                         <td>{project.name}</td>
                         <td>{new Date(project.startDate).toDateString()}</td>

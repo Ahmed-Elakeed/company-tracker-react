@@ -37,7 +37,7 @@ const Admin = () => {
                 </thead>
                 <tbody>
                 {admins.map((admin) => (
-                    <tr>
+                    <tr key={admin.id}>
                         <td>{admin.id}</td>
                         <td>{admin.name}</td>
                         <td>{admin.email}</td>
