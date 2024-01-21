@@ -18,10 +18,10 @@ const Department = () => {
         flag: false
     })
     useEffect(() => {
-        initData()
+        fetchDepartments()
     }, []);
 
-    const initData = () => {
+    const fetchDepartments = () => {
         const fetchDataFromApi = async () => {
             try {
                 const data = await DepartmentService.fetchAllDepartments();
@@ -92,7 +92,7 @@ const Department = () => {
     const closePopup = (type, result) => {
         if (type === "FORM") {
             if (result) {
-                initData()
+                fetchDepartments()
             }
             setDepartmentFormProps({
                 flag: false
@@ -170,7 +170,7 @@ const Department = () => {
             {customViewProps.flag &&
                 <CustomPopupView viewProps={customViewProps} closePopup={closePopup}/>}
             {departmentFormProps.flag &&
-                <DepartmentForm closePopup={closePopup}/>}
+                <DepartmentForm closeForm={closePopup}/>}
         </div>
     );
 }

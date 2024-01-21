@@ -19,4 +19,4 @@ reportWebVitals();
 
 
 
-// TODO -> Employees : Add, Update and Delete
+// TODO -> Projects : Add, Update and Delete

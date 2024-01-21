@@ -6,14 +6,13 @@ import type {ApiGenericResponse} from "../../../dto/ApiGenericResponse";
 const DepartmentForm = (props) => {
     const [department, setDepartment] = useState({id: -1, name: ""})
     const [errorMessage, setErrorMessage] = useState(false);
-    const closePopup = (event) => {
+    const closeForm = (event) => {
         if (event) {
             event.preventDefault();
-            props.closePopup("FORM");
+            props.closeForm("FORM");
         }else{
-            props.closePopup("FORM",true);
+            props.closeForm("FORM",true);
         }
-
     }
 
     const saveDepartment = (event) => {
@@ -30,7 +29,7 @@ const DepartmentForm = (props) => {
         savedDepartment().then((response: ApiGenericResponse) => {
             if (response.responseCode === 200) {
                 setErrorMessage(false);
-                closePopup();
+                closeForm();
             } else {
                 setErrorMessage(true);
             }
@@ -74,8 +73,8 @@ const DepartmentForm = (props) => {
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12">
                                 <button type="submit" className="btn btn-lg btn-success btn-block">Save</button>
-                                <button className="btn btn-lg btn-danger btn-block"
-                                        onClick={closePopup}>Close
+                                <button type="button" className="btn btn-lg btn-danger btn-block"
+                                        onClick={closeForm}>Close
                                 </button>
                             </div>
                         </div>
