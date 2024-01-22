@@ -47,7 +47,7 @@ const EmployeeForm = (props) => {
         })
     }
     return (
-        <div className="modal" id="viewForm" tabIndex="-1" role="dialog">
+        <div className="modal" id="employeeForm" tabIndex="-1" role="dialog">
             <div className="row" style={{marginTop: "20px"}}>
                 {errorMessage && employee.departmentId &&
                     <div>

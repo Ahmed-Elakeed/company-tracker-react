@@ -19,4 +19,6 @@ reportWebVitals();
 
 
 
-// TODO -> Projects : Add, Update and Delete
+// TODO -> - Admins : Add, Update and Delete
+//         - Login and Authentication
+//         - Apply backend interceptor and frontend component handler and login redirect in session expired

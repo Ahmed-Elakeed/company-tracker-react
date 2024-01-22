@@ -6,9 +6,9 @@ const EmployeeService = axios.create({
     baseURL: EMPLOYEE_BASE_URL,
 });
 
-export const fetchAllEmployees = async (endpoint) => {
+export const fetchAllEmployees = async () => {
     try {
-        const response = await EmployeeService.get(endpoint);
+        const response = await EmployeeService.get(`${EMPLOYEE_BASE_URL}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching data:', error);

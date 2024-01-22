@@ -6,9 +6,9 @@ const AdminService = axios.create({
     baseURL: ADMIN_BASE_URL,
 });
 
-export const fetchAllAdmins = async (endpoint) => {
+export const fetchAllAdmins = async () => {
     try {
-        const response = await AdminService.get(endpoint);
+        const response = await AdminService.get(`${ADMIN_BASE_URL}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching data:', error);

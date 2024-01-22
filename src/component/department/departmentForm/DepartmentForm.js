@@ -42,7 +42,7 @@ const DepartmentForm = (props) => {
         });
     }
     return (
-        <div className="modal" id="viewForm" tabIndex="-1" role="dialog">
+        <div className="modal" id="departmentForm" tabIndex="-1" role="dialog">
             <div className="row" style={{marginTop: "20px"}}>
                 {errorMessage &&
                     <div>

@@ -2,6 +2,7 @@ import "./Admin.css";
 import {useEffect, useState} from "react";
 import * as AdminService from "../../service/AdminService";
 import type {ApiGenericResponse} from "../../dto/ApiGenericResponse";
+import type {AdminDTO} from "../../dto/AdminDTO";
 
 
 const Admin = () => {
@@ -36,7 +37,7 @@ const Admin = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {admins.map((admin) => (
+                {admins.map((admin:AdminDTO) => (
                     <tr key={admin.id}>
                         <td>{admin.id}</td>
                         <td>{admin.name}</td>

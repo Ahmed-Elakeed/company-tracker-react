@@ -2,10 +2,20 @@ import './Project.css';
 import {useEffect, useState} from "react";
 import type {ApiGenericResponse} from "../../dto/ApiGenericResponse";
 import * as ProjectService from "../../service/ProjectService";
+import ProjectForm from "./projectForm/ProjectForm";
+import type {ProjectDTO} from "../../dto/ProjectDTO";
 
 const Project = () => {
     const [projects, setProjects] = useState([])
+    const [projectFormProps, setProjectFormProps] = useState({
+        flag: false,
+        data: {name: "", startDate: "", endDate: "", description: "", status: "", departmentId: ""}
+    })
     useEffect(() => {
+        fetchProjects();
+    }, []);
+
+    const fetchProjects = () => {
         const fetchDataFromApi = async () => {
             try {
                 const data = await ProjectService.fetchAllProjects();
@@ -18,12 +28,57 @@ const Project = () => {
         fetchDataFromApi().then((response: ApiGenericResponse) => {
             setProjects(response?.data)
         });
-    }, []);
+    }
+
+    const deleteProject=(projectId)=>{
+        if (window.confirm('Are sure you want to delete this item ?')) {
+            const deleteProject = async () => {
+                try {
+                    return await ProjectService.deleteProjectById(projectId);
+                } catch (error) {
+                    // Handle error
+                }
+            };
+            deleteProject().then((response: ApiGenericResponse) => {
+                if (response.responseCode === 200) {
+                    setProjects((prevState) => {
+                        return prevState.filter(project => {
+                            return project.id !== projectId
+                        })
+                    })
+                }
+            })
+        }
+    }
+    const openProjectForm = (event, project) => {
+        event.preventDefault()
+        if (project) {
+            setProjectFormProps({
+                flag: true,
+                data: project
+            })
+        } else {
+            setProjectFormProps((prevState) => ({
+                ...prevState,
+                flag: true
+            }));
+        }
+    }
+    const closeForm = (onlyCloseFlag) => {
+        setProjectFormProps({
+            flag: false,
+            data: {name: "", startDate: "", endDate: "", description: "", status: "", departmentId: ""}
+        })
+        if (!onlyCloseFlag) {
+            fetchProjects()
+        }
+    }
     return (
         <div>
             <h3 style={{color: '#a30505'}}>Projects</h3>
             <a href="/true" className="btn btn-success"
-               style={{float: "right", marginRight: "5px", marginBottom: "5px"}}>Add Project</a>
+               style={{float: "right", marginRight: "5px", marginBottom: "5px"}}
+               onClick={openProjectForm}>Add Project</a>
             <table className="table">
                 <thead className="thead-dark">
                 <tr>
@@ -38,7 +93,7 @@ const Project = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {projects?.map((project) => (
+                {projects?.map((project:ProjectDTO) => (
                     <tr key={project.id}>
                         <td>{project.id}</td>
                         <td>{project.name}</td>
@@ -48,15 +103,22 @@ const Project = () => {
                         <td>{project.status}</td>
                         <td>{project.departmentName}</td>
                         <td>
-                            <button className="btn btn-primary">Update</button>
+                            <button className="btn btn-primary"
+                                    onClick={(event) => {
+                                        openProjectForm(event, project)
+                                    }}>Update</button>
                             |
-                            <button className="btn btn-danger">Delete</button>
+                            <button className="btn btn-danger"
+                                    onClick={() => {
+                                        deleteProject(project.id)
+                                    }}>Delete</button>
                         </td>
                     </tr>
                 ))}
                 </tbody>
             </table>
-
+            {projectFormProps.flag &&
+                <ProjectForm closeForm={closeForm} formProps={projectFormProps}/>}
         </div>
     );
 }

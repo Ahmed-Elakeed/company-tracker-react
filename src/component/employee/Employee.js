@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import * as EmployeeService from "../../service/EmployeeService";
 import type {ApiGenericResponse} from "../../dto/ApiGenericResponse";
 import EmployeeForm from "./employeeForm/EmployeeForm";
+import type {EmployeeDTO} from "../../dto/EmployeeDTO";
 
 const Employee = () => {
     const [employees, setEmployees] = useState([])
@@ -49,12 +50,12 @@ const Employee = () => {
             })
         }
     }
-    const openEmployeeForm = (event, employeeId) => {
+    const openEmployeeForm = (event, employee) => {
         event.preventDefault()
-        if (employeeId) {
+        if (employee) {
             setEmployeeFormProps({
                 flag: true,
-                data: employees.filter(employee => employee.id === employeeId).pop()
+                data: employee
             })
         } else {
             setEmployeeFormProps((prevState) => ({
@@ -89,7 +90,7 @@ const Employee = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {employees?.map((employee) => (
+                {employees?.map((employee:EmployeeDTO) => (
                     <tr key={employee.id}>
                         <td>{employee.id}</td>
                         <td>{employee.fullName}</td>
@@ -98,7 +99,7 @@ const Employee = () => {
                         <td>
                             <button className="btn btn-primary"
                                     onClick={(event) => {
-                                        openEmployeeForm(event, employee.id)
+                                        openEmployeeForm(event, employee)
                                     }}>Update
                             </button>
                             |

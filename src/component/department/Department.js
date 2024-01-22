@@ -4,6 +4,7 @@ import * as DepartmentService from "../../service/DepartmentService";
 import type {ApiGenericResponse} from "../../dto/ApiGenericResponse";
 import CustomPopupView from "../customPopupView/CustomPopupView";
 import DepartmentForm from "./departmentForm/DepartmentForm";
+import type {DepartmentDTO} from "../../dto/DepartmentDTO";
 
 const Department = () => {
     const [departments, setDepartments] = useState([])
@@ -146,7 +147,7 @@ const Department = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {departments?.map((department) => (
+                {departments?.map((department:DepartmentDTO) => (
                     <tr key={department.id}>
                         <td>{department.id}</td>
                         <td>{department.name}</td>
