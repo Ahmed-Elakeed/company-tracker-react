@@ -1,9 +1,10 @@
 import "./Navbar.css";
 import {useHistory} from "react-router-dom";
 import {useAuth} from "../../security/AuthContext";
+import * as SessionUtil from "../../util/SessionUtil";
 
 const Navbar = () => {
-    const {setAuthenticationData } = useAuth();
+    const {setAuthenticationData} = useAuth();
     const history = useHistory();
     const titleStyle = {
         fontSize: "x-large",
@@ -35,7 +36,9 @@ const Navbar = () => {
                     <a href="/employees" className="nav-item nav-link">Employees</a>
                     <a href="/projects" className="nav-item nav-link">Projects</a>
                     <a href="/tasks" className="nav-item nav-link">Tasks</a>
-                    <a href="/admins" className="nav-item nav-link" style={adminButtonStyle}>Admins</a>
+                    {SessionUtil.getAuthenticationData().role === 0 &&
+                        <a href="/admins" className="nav-item nav-link" style={adminButtonStyle}>Admins</a>
+                    }
                 </div>
             </div>
             <a href="/true" className="btn btn-primary mb-lg-auto update-button">Update my data</a>
