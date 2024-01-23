@@ -1,9 +1,10 @@
 import "./Employee.css";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as EmployeeService from "../../service/EmployeeService";
 import type {ApiGenericResponse} from "../../dto/ApiGenericResponse";
 import EmployeeForm from "./employeeForm/EmployeeForm";
 import type {EmployeeDTO} from "../../dto/EmployeeDTO";
+import Navbar from "../navbar/Navbar";
 
 const Employee = () => {
     const [employees, setEmployees] = useState([])
@@ -75,6 +76,7 @@ const Employee = () => {
     }
     return (
         <div>
+            <Navbar/>
             <h3 style={{color: '#a30505'}}>Employees</h3>
             <a href="/true" className="btn btn-success"
                style={{float: "right", marginRight: "5px", marginBottom: "5px"}}

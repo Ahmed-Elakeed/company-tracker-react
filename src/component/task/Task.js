@@ -1,10 +1,11 @@
 import "./Task.css";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import type {ApiGenericResponse} from "../../dto/ApiGenericResponse";
 import * as TaskService from "../../service/TaskService";
 import TaskForm from "./taskForm/TaskForm";
 import type {TaskDTO} from "../../dto/TaskDTO";
 import TaskReport from "./taskReport/TaskReport";
+import Navbar from "../navbar/Navbar";
 
 const Task = () => {
     const [tasks, setTasks] = useState([]);
@@ -78,6 +79,7 @@ const Task = () => {
     }
     return (
         <div>
+            <Navbar/>
             <h3 style={{color: '#a30505'}}>Tasks</h3>
             <a href="/true" className="btn btn-success"
                style={{float: "right", marginRight: "5px", marginBottom: "5px"}}
@@ -104,7 +106,7 @@ const Task = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {tasks.map((task: TaskDTO) => (
+                {tasks?.map((task: TaskDTO) => (
                     <tr key={task.id}>
                         <td>{task.id}</td>
                         <td>{task.name}</td>

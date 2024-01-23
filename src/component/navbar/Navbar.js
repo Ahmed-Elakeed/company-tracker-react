@@ -1,7 +1,9 @@
 import "./Navbar.css";
 import {useHistory} from "react-router-dom";
+import {useAuth} from "../../security/AuthContext";
 
 const Navbar = () => {
+    const {setAuthenticationData } = useAuth();
     const history = useHistory();
     const titleStyle = {
         fontSize: "x-large",
@@ -17,6 +19,7 @@ const Navbar = () => {
         event.preventDefault()
         sessionStorage.clear();
         localStorage.clear();
+        setAuthenticationData(null);
         history.push("/login")
     }
     return (

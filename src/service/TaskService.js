@@ -1,14 +1,11 @@
-import axios from 'axios';
+import AuthInterceptor from "../security/AuthInterceptor";
 
 const TASK_BASE_URL = 'http://localhost:8080/tasks/';
 
-const TaskService = axios.create({
-    baseURL: TASK_BASE_URL,
-});
 
 export const fetchAllTasks = async () => {
     try {
-        const response = await TaskService.get(`${TASK_BASE_URL}`);
+        const response = await AuthInterceptor.get(`${TASK_BASE_URL}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -17,7 +14,7 @@ export const fetchAllTasks = async () => {
 };
 export const deleteTaskById = async (taskId) => {
     try {
-        const response = await TaskService.delete(`${TASK_BASE_URL}${taskId}`);
+        const response = await AuthInterceptor.delete(`${TASK_BASE_URL}${taskId}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting task:', error);
@@ -26,7 +23,7 @@ export const deleteTaskById = async (taskId) => {
 }
 export const saveOrUpdateTask = async (task) => {
     try {
-        const response = await TaskService.post(`${TASK_BASE_URL}`, task);
+        const response = await AuthInterceptor.post(`${TASK_BASE_URL}`, task);
         return response.data;
     } catch (error) {
         console.error('Error saving or updating task:', error);
@@ -35,7 +32,7 @@ export const saveOrUpdateTask = async (task) => {
 }
 export const sendTaskReports = async (selectedStatus) => {
     try {
-        const response = await TaskService.get(`${TASK_BASE_URL}report`,{
+        const response = await AuthInterceptor.get(`${TASK_BASE_URL}report`,{
             params:{
                 taskStatus: selectedStatus
             }

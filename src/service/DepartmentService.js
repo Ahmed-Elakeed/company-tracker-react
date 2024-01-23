@@ -1,14 +1,10 @@
-import axios from 'axios';
+import AuthInterceptor from "../security/AuthInterceptor";
 
 const DEPARTMENT_BASE_URL = 'http://localhost:8080/departments/';
 
-const DepartmentService = axios.create({
-    baseURL: DEPARTMENT_BASE_URL,
-});
-
 export const fetchAllDepartments = async () => {
     try {
-        const response = await DepartmentService.get(`${DEPARTMENT_BASE_URL}`);
+        const response = await AuthInterceptor.get(`${DEPARTMENT_BASE_URL}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching departments:', error);
@@ -18,7 +14,7 @@ export const fetchAllDepartments = async () => {
 
 export const fetchDepartmentEmployees = async (departmentId) => {
     try {
-        const response = await DepartmentService.get(`${DEPARTMENT_BASE_URL}${departmentId}/employees`);
+        const response = await AuthInterceptor.get(`${DEPARTMENT_BASE_URL}${departmentId}/employees`);
         return response.data;
     } catch (error) {
         console.error('Error fetching department employees:', error);
@@ -28,7 +24,7 @@ export const fetchDepartmentEmployees = async (departmentId) => {
 
 export const fetchDepartmentProjects = async (departmentId) => {
     try {
-        const response = await DepartmentService.get(`${DEPARTMENT_BASE_URL}${departmentId}/projects`);
+        const response = await AuthInterceptor.get(`${DEPARTMENT_BASE_URL}${departmentId}/projects`);
         return response.data;
     } catch (error) {
         console.error('Error fetching department projects:', error);
@@ -37,7 +33,7 @@ export const fetchDepartmentProjects = async (departmentId) => {
 }
 export const deleteDepartmentById = async (departmentId) => {
     try {
-        const response = await DepartmentService.delete(`${DEPARTMENT_BASE_URL}${departmentId}`);
+        const response = await AuthInterceptor.delete(`${DEPARTMENT_BASE_URL}${departmentId}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting department:', error);
@@ -46,7 +42,7 @@ export const deleteDepartmentById = async (departmentId) => {
 }
 export const saveDepartment = async (department) => {
     try {
-        const response = await DepartmentService.post(`${DEPARTMENT_BASE_URL}`,department);
+        const response = await AuthInterceptor.post(`${DEPARTMENT_BASE_URL}`,department);
         return response.data;
     } catch (error) {
         console.error('Error saving department:', error);

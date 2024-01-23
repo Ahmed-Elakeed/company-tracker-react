@@ -1,10 +1,11 @@
 import "./Department.css";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as DepartmentService from "../../service/DepartmentService";
 import type {ApiGenericResponse} from "../../dto/ApiGenericResponse";
 import CustomPopupView from "../customPopupView/CustomPopupView";
 import DepartmentForm from "./departmentForm/DepartmentForm";
 import type {DepartmentDTO} from "../../dto/DepartmentDTO";
+import Navbar from "../navbar/Navbar";
 
 const Department = () => {
     const [departments, setDepartments] = useState([])
@@ -19,6 +20,7 @@ const Department = () => {
         flag: false
     })
     useEffect(() => {
+
         fetchDepartments()
     }, []);
 
@@ -134,6 +136,7 @@ const Department = () => {
     }
     return (
         <div>
+            <Navbar/>
             <h3 style={{color: '#a30505'}}>Departments</h3>
             <a href="/true" className="btn btn-success"
                style={{float: "right", marginRight: "5px", marginBottom: "5px"}}

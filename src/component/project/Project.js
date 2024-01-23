@@ -1,9 +1,10 @@
 import './Project.css';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import type {ApiGenericResponse} from "../../dto/ApiGenericResponse";
 import * as ProjectService from "../../service/ProjectService";
 import ProjectForm from "./projectForm/ProjectForm";
 import type {ProjectDTO} from "../../dto/ProjectDTO";
+import Navbar from "../navbar/Navbar";
 
 const Project = () => {
     const [projects, setProjects] = useState([])
@@ -75,6 +76,7 @@ const Project = () => {
     }
     return (
         <div>
+            <Navbar/>
             <h3 style={{color: '#a30505'}}>Projects</h3>
             <a href="/true" className="btn btn-success"
                style={{float: "right", marginRight: "5px", marginBottom: "5px"}}

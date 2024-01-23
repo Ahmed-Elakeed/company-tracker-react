@@ -1,8 +1,9 @@
 import "./Admin.css";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as AdminService from "../../service/AdminService";
 import type {ApiGenericResponse} from "../../dto/ApiGenericResponse";
 import type {AdminDTO} from "../../dto/AdminDTO";
+import Navbar from "../navbar/Navbar";
 
 
 const Admin = () => {
@@ -23,6 +24,7 @@ const Admin = () => {
     }, []);
     return (
         <div>
+            <Navbar/>
             <h3 style={{color: '#a30505'}}>Admins</h3>
             <a href="/true" className="btn btn-success"
                style={{float: "right", marginRight: "5px", marginBottom: "5px"}}>Add Admin</a>
