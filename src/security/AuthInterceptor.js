@@ -29,7 +29,6 @@ AuthInterceptor.interceptors.request.use(
     (config) => {
         // Modify the request config (headers, etc.) before sending the request
         // You can also add authentication tokens or perform other actions
-        console.log(config)
         if (!config.url.includes("login")) {
             config.headers["authToken"] = SessionUtil.getAuthenticationData().token;
         }
