@@ -9,7 +9,7 @@
     border: 5px solid #ccc;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 500px;
-    height: 580px;
+    height: 620px;
 
     /* Set width and height to overflow the page */
     overflow: auto;

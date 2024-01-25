@@ -41,3 +41,13 @@ export const saveOrUpdateAdmin = async (admin) => {
         throw error;
     }
 }
+
+export const validatePassword = async (loginDTO) => {
+    try {
+        const response = await AuthInterceptor.post(`${ADMIN_BASE_URL}validate-password`, loginDTO);
+        return response.data;
+    } catch (error) {
+        console.error('Error validating admin password:', error);
+        throw error;
+    }
+}

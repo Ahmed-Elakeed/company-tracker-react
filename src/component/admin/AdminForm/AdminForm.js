@@ -3,10 +3,12 @@ import {useState} from "react";
 import {AdminRole} from "../../../enums/AdminRole";
 import type {ApiGenericResponse} from "../../../dto/ApiGenericResponse";
 import * as AdminService from "../../../service/AdminService";
+import * as SessionUtil from "../../../util/SessionUtil";
 
 const AdminForm = (props) => {
     const [admin, setAdmin] = useState(props.formProps.data);
     const [errorMessage, setErrorMessage] = useState(false);
+
     const closeForm = (onlyCloseFlag) => {
         props.closeForm(onlyCloseFlag);
     }
@@ -15,24 +17,50 @@ const AdminForm = (props) => {
         if (admin.password !== admin.confirmPassword) {
             setErrorMessage(true);
         } else {
-            const savedOrUpdatedAdmin = async () => {
-                try {
-                    const data = await AdminService.saveOrUpdateAdmin(admin);
-                    console.log('Fetched data:', data);
-                    return data;
-                } catch (error) {
-                    // Handle error
-                }
-            };
-            savedOrUpdatedAdmin().then((response: ApiGenericResponse) => {
-                if (response.responseCode === 200) {
-                    setErrorMessage(false);
-                    closeForm(false);
-                } else {
-                    setErrorMessage(true);
-                }
-            })
+            if (admin.oldPassword) {
+                const checkAdminOldPassword = async () => {
+                    try {
+                        const data = await AdminService.validatePassword({
+                            email: SessionUtil.getAuthenticationData().email,
+                            password: admin.oldPassword
+                        });
+                        console.log('Fetched data:', data);
+                        return data;
+                    } catch (error) {
+                        // Handle error
+                    }
+                };
+                checkAdminOldPassword().then((response: ApiGenericResponse) => {
+                    if (response.responseCode === 200) {
+                        setErrorMessage(false);
+                        saveOrUpdate(admin, true)
+                    } else {
+                        setErrorMessage("InvalidOldPassword");
+                    }
+                })
+            } else {
+                saveOrUpdate(admin, false);
+            }
         }
+    }
+    const saveOrUpdate = (admin, onlyCloseFlag) => {
+        const savedOrUpdatedAdmin = async () => {
+            try {
+                const data = await AdminService.saveOrUpdateAdmin(admin);
+                console.log('Fetched data:', data);
+                return data;
+            } catch (error) {
+                // Handle error
+            }
+        };
+        savedOrUpdatedAdmin().then((response: ApiGenericResponse) => {
+            if (response.responseCode === 200) {
+                setErrorMessage(false);
+                closeForm(onlyCloseFlag);
+            } else {
+                setErrorMessage(true);
+            }
+        })
     }
 
     const allAdminRoles = () => {
@@ -41,6 +69,13 @@ const AdminForm = (props) => {
     return (
         <div className="modal" id="adminForm" tabIndex="-1" role="dialog">
             <div className="row" style={{marginTop: "20px"}}>
+                {errorMessage === "InvalidOldPassword" &&
+                    <div>
+                        <div className="alert alert-danger">
+                            Invalid old password
+                        </div>
+                    </div>
+                }
                 {errorMessage && !admin.role &&
                     <div>
                         <div className="alert alert-danger">
@@ -48,7 +83,7 @@ const AdminForm = (props) => {
                         </div>
                     </div>
                 }
-                {errorMessage && admin.password === admin.confirmPassword &&
+                {errorMessage === true && admin.password === admin.confirmPassword &&
                     <div>
                         <div className="alert alert-danger">
                             Admin with same email already exist
@@ -96,6 +131,22 @@ const AdminForm = (props) => {
                                    type="email" name="email" id="email" className="form-control input-group-sm"
                                    placeholder="Email"/>
                         </div>
+                        {admin.id &&
+                            <div>
+                                <hr className="colorgraph"/>
+                                <div className="form-group">
+                                    <input onChange={(e) => {
+                                        setAdmin((prevState) => ({
+                                            ...prevState,
+                                            oldPassword: e.target.value
+                                        }))
+                                    }}
+                                           type="password" name="oldPassword" id="oldPassword"
+                                           className="form-control input-group-sm"
+                                           placeholder="Old password" required/>
+                                </div>
+                            </div>
+                        }
                         <hr className="colorgraph"/>
                         <div className="form-group">
                             <input onChange={(e) => {
@@ -104,7 +155,8 @@ const AdminForm = (props) => {
                                     password: e.target.value
                                 }))
                             }}
-                                   type="password" name="password" id="password" className="form-control input-group-sm"
+                                   type="password" name="password" id="password"
+                                   className="form-control input-group-sm"
                                    placeholder="Password" required/>
                         </div>
                         <hr className="colorgraph"/>
@@ -129,6 +181,7 @@ const AdminForm = (props) => {
                                     }}
                                     id="roleSelect"
                                     className="form-select"
+                                    disabled={admin.role === "SLAVE"}
                                     required
                                 >
                                     <option value="" disabled>Select role</option>
@@ -145,7 +198,7 @@ const AdminForm = (props) => {
                                 <button type="submit" className="btn btn-lg btn-success btn-block">Submit</button>
                                 <button type="button" className="btn btn-lg btn-danger btn-block"
                                         onClick={() => {
-                                            closeForm(true)
+                                            closeForm(false)
                                         }}>Close
                                 </button>
                             </div>
